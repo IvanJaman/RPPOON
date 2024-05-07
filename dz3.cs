@@ -1,8 +1,8 @@
-﻿public abstract class Wizard{
+public abstract class Wizard{
     public abstract void DoMagic(); 
 }
 
-abstract class Goblin{
+public abstract class Goblin{
     public abstract void DoDamage();
 }
 
@@ -14,19 +14,19 @@ public class FireWizard : Wizard{
     }
 
     public class WaterWizard : Wizard{
-        public void DoMagic(){
+        public override void DoMagic(){
             Console.WriteLine("Do Water Magic");
         }
     }
 
     public class FireGoblin : Goblin{
-        public void DoDamage(){
+        public override void DoDamage(){
             Console.WriteLine("Do Fire Damage");
         }
     }
 
     public class WaterGoblin : Goblin{
-        public void DoDamage(){
+        public override void DoDamage(){
             Console.WriteLine("Do Water Damage");
         }
     }
