@@ -1,11 +1,12 @@
-﻿//zad1
+//zad1
 //Obrazac je graditelj (builder), pripada skupini obrazaca stvaranja.
 
 public interface IConstructable{
-    public MailConstructor AddSubject(string subject);
-    public MailConstructor AddContent(string content);
-    public MailConstructor AddRecipient(string recipient);
-    public MailConstructor AddAttachments(string attachments);
+    public IConstructable AddSubject(string subject);
+    public IConstructable AddContent(string content);
+    public IConstructable AddRecipient(string recipient);
+    public IConstructable AddAttachments(string attachments);
+    public Mail Construct();
     public IConstructable Reset();
 
 }
@@ -22,19 +23,19 @@ public class MailConstructor : IConstructable{
     public MailConstructor(){
         mail = new Mail();
     }
-    public MailConstructor AddSubject(string subject){
+    public IConstructable AddSubject(string subject){
         mail.Subject = subject;
         return this;
     }
-    public MailConstructor AddContent(string content){
+    public IConstructable AddContent(string content){
         mail.Content = content;
         return this;
     }
-    public MailConstructor AddRecipient(string recipient){
+    public IConstructable AddRecipient(string recipient){
         mail.Recipient = recipient;
         return this;
     }
-    public MailConstructor AddAttachments(string attachments){
+    public IConstructable AddAttachments(string attachments){
         mail.Attachments = attachments;
         return this;
     }
@@ -50,19 +51,23 @@ public class MailConstructor : IConstructable{
 }
 
 public class NoReplyMailSender {
-    MailConstructor mailConstructor;
-    public NoReplyMailSender(MailConstructor mailConstructor) {
-        this.mailConstructor = mailConstructor;
+    IConstructable MailConstructor;
+    public NoReplyMailSender(IConstructable mailConstructor) {
+        MailConstructor = mailConstructor;
     }
 
     public void SendNoReplyMail(){
         mailConstructor.AddSubject("No Reply").AddContent("Hello World").Construct();
-            //Sending logic here
+        //Sending logic here
     }
 }
 
 class ClientCode1{
-    MailConstructor mailConstructor = new MailConstructor();
+    public static void Run(){
+        IConstructable mailConstructor = new IConstructable();
+        NoReplyMailSender noReplyMailSender = new NoReplyMailSender(mailConstructor);
+        noReplyMailSender.SendNoReplyMail();
+    }
 }
 
 
@@ -108,6 +113,17 @@ public abstract class LoginPageFactory{
     public abstract LoginPage CreatePage();
 }
 
-class ClientCode2{
+public class ChromeLoginPageFactory : LoginPageFactory{
+    public override LoginPage CreatePage()
+    {
+        return new ChromeLoginPage();
+    }
+}
 
+class ClientCode2{
+    public static void Run(){
+        LoginPageFactory loginPageFactory = new ChromeLoginPageFactory();
+        LoginPage loginPage = loginPageFactory.CreatePage();
+        loginPage.CreateLoginButton().Click();
+    }
 }
