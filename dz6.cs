@@ -225,3 +225,17 @@ public class FiveHunderedHandler : Handler{
         }
     }
 }
+
+public static class ClientCode{
+        public static void Run(){
+            FiveHundredHandler fiveHundredHandler = new FiveHundredHandler();
+            TwoHundredHandler twoHundredHandler = new TwoHundredHandler();
+            HundredHandler hundredHandler = new HundredHandler();
+            
+            fiveHundredHandler.SetNextHandler(twoHundredHandler);
+            twoHundredHandler.SetNextHandler(hundredHandler);
+
+            fiveHundredHandler.DispatchNote(200);
+        }
+    }
+}
